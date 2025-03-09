@@ -11,6 +11,10 @@ import org.apache.commons.io.LineIterator;
 public class DebuggableReleaseRule {
 
     public boolean isDebuggableRelease(File androidManifest) throws IOException {
+        if (androidManifest == null || !androidManifest.exists()) {
+            System.err.println("Error: File does not exist or is null.");
+            return false;
+        }
         Pattern regex = Pattern.compile("(.*)android:debuggable(\\s*)=(\\s*)\"true\"", Pattern.MULTILINE);
         LineIterator iter = FileUtils.lineIterator(androidManifest);
         while (iter.hasNext()) {

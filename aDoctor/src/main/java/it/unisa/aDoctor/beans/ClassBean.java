@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public final class ClassBean {
 
     private String name;
+    private String filePath;
     private Collection<InstanceVariableBean> instanceVariables;
     private Collection<MethodBean> methods;
     private Collection<String> imports;
@@ -31,6 +32,14 @@ public final class ClassBean {
         instanceVariables = new ArrayList<>();
         methods = new ArrayList<>();
         setImports(new ArrayList<>());
+    }
+
+    public void setFilePath(String filepath){
+        this.filePath = filepath;
+    }
+
+     public String getFilePath(){
+        return this.filePath;
     }
 
     public String getName() {

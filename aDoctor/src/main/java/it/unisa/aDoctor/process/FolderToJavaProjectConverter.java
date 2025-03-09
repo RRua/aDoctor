@@ -44,10 +44,15 @@ public class FolderToJavaProjectConverter {
 
                     if (javaFiles.size() > 0) {
                         for (File javaFile : javaFiles) {
-                            // System.out.println(javaFile.getAbsolutePath());
+                            System.out.println(javaFile.getAbsolutePath());
                             CompilationUnit parsed = codeParser.createParser(FileUtilities.readFile(javaFile.getAbsolutePath()));
-                            TypeDeclaration typeDeclaration = (TypeDeclaration) parsed.types().get(0);
-
+                            TypeDeclaration typeDeclaration = null;
+                            try{
+                                typeDeclaration = (TypeDeclaration) parsed.types().get(0);
+                            }
+                            catch(Exception e){
+                                continue;
+                            }
                             ArrayList<String> imports = new ArrayList<>();
 
                             for (Object importedResource : parsed.imports()) {
@@ -60,7 +65,7 @@ public class FolderToJavaProjectConverter {
                                 PackageBean packageBean = new PackageBean();
                                 packageBean.setName(parsed.getPackage().getName().getFullyQualifiedName());
 
-                                ClassBean classBean = ClassParser.parse(typeDeclaration, packageBean.getName(),
+                                ClassBean classBean = ClassParser.parse(javaFile.getAbsolutePath(),typeDeclaration, packageBean.getName(),
                                         imports);
                                 classBean.setPathToClass(javaFile.getAbsolutePath());
 
@@ -71,7 +76,7 @@ public class FolderToJavaProjectConverter {
                                 Collection<ClassBean> innerClasses = new ArrayList<>();
                                 for (TypeDeclaration innerType : innerTypes) {
                                     //TypeDeclaration innerClassDeclaration = (TypeDeclaration) parsed.types().get(i);
-                                    ClassBean innerClass = ClassParser.parse(innerType,
+                                    ClassBean innerClass = ClassParser.parse(javaFile.getAbsolutePath(),innerType,
                                             packageBean.getName(), imports);
 
                                     for (int i = 0; i < innerType.modifiers().size(); i++) {
@@ -91,7 +96,7 @@ public class FolderToJavaProjectConverter {
                                 PackageBean packageBean = FolderToJavaProjectConverter.getPackageByName(
                                         parsed.getPackage().getName().getFullyQualifiedName(), packages);
 
-                                ClassBean classBean = ClassParser.parse(typeDeclaration, packageBean.getName(),
+                                ClassBean classBean = ClassParser.parse(javaFile.getAbsolutePath(), typeDeclaration, packageBean.getName(),
                                         imports);
                                 classBean.setPathToClass(javaFile.getAbsolutePath());
 
@@ -102,7 +107,7 @@ public class FolderToJavaProjectConverter {
                                 Collection<ClassBean> innerClasses = new ArrayList<>();
                                 for (TypeDeclaration innerType : innerTypes) {
                                     //TypeDeclaration innerClassDeclaration = (TypeDeclaration) parsed.types().get(i);
-                                    ClassBean innerClass = ClassParser.parse(innerType,
+                                    ClassBean innerClass = ClassParser.parse(javaFile.getAbsolutePath(), innerType,
                                             packageBean.getName(), imports);
 
                                     for (int i = 0; i < innerType.modifiers().size(); i++) {

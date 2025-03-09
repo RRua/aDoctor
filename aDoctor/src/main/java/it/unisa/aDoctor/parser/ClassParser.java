@@ -15,11 +15,12 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class ClassParser {
 
-    public static ClassBean parse(TypeDeclaration pClassNode) {
+    public static ClassBean parse(String filePath, TypeDeclaration pClassNode) {
         int numberOfGetterOrSetter = 0;
 
         // Instantiate the bean
         ClassBean classBean = new ClassBean();
+        classBean.setFilePath(filePath);
 
         if (pClassNode.getSuperclassType() != null) {
             classBean.setSuperclass(pClassNode.getSuperclassType().toString());
@@ -94,12 +95,12 @@ public class ClassParser {
 
     }
 
-    public static ClassBean parse(TypeDeclaration pClassNode, String belongingPackage, List<String> imports) {
+    public static ClassBean parse(String filePath, TypeDeclaration pClassNode, String belongingPackage, List<String> imports) {
         int numberOfGetterOrSetter = 0;
 
         // Instantiate the bean
         ClassBean classBean = new ClassBean();
-
+        classBean.setFilePath(filePath);
         if (pClassNode.getSuperclassType() != null) {
             classBean.setSuperclass(pClassNode.getSuperclassType().toString());
         } else {

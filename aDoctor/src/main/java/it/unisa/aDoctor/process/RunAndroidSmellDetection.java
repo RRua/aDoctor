@@ -50,7 +50,7 @@ public class RunAndroidSmellDetection {
         File fileName = new File(args[1]);
         String smellsNeeded = args[2];
 
-        FILE_HEADER = new String[StringUtils.countMatches(smellsNeeded, "1") + 1];
+        FILE_HEADER = new String[StringUtils.countMatches(smellsNeeded, "1") + 2];
 
         DataTransmissionWithoutCompressionRule dataTransmissionWithoutCompressionRule = new DataTransmissionWithoutCompressionRule();
         DebuggableReleaseRule debbugableReleaseRule = new DebuggableReleaseRule();
@@ -70,9 +70,11 @@ public class RunAndroidSmellDetection {
 
         String[] smellsType = {"DTWC", "DR", "DW", "IDFP", "IDS", "ISQLQ", "IGS", "LIC", "LT", "MIM", "NLMR", "PD", "RAM", "SL", "UC"};
 
-        FILE_HEADER[0] = "Class";
 
-        int headerCounter = 1;
+        FILE_HEADER[0] = "File";
+        FILE_HEADER[1] = "Class";
+
+        int headerCounter = 2;
 
         for (int i = 0; i < smellsNeeded.length(); i++) {
             if (smellsNeeded.charAt(i) == '1') {
@@ -100,8 +102,8 @@ public class RunAndroidSmellDetection {
                             List record = new ArrayList();
 
                             System.out.println("-- Analyzing class: " + classBean.getBelongingPackage() + "." + classBean.getName());
-
-                            record.add(classBean.getBelongingPackage() + "." + classBean.getName());
+                            record.add(classBean.getFilePath());
+                            record.add(classBean.getBelongingPackage() + "." + classBean.getName() );
 
                             if (smellsNeeded.charAt(0) == '1') {
                                 if (dataTransmissionWithoutCompressionRule.isDataTransmissionWithoutCompression(classBean)) {

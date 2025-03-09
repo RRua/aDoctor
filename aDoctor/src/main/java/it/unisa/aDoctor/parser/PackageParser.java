@@ -36,7 +36,7 @@ public class PackageParser {
                 imported.add(importedResource.getElementName());
             }
 
-            classes.add(ClassParser.parse(typeDeclaration, packageBean.getName(), imported));
+            classes.add(ClassParser.parse(cu.getPath().toOSString(),typeDeclaration, packageBean.getName(), imported));
         }
 
         packageBean.setTextContent(textualContent);
